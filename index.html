@@ -3,72 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Watch Terabox Videos</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f9f9f9;
-        }
-        .container {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 350px;
-            text-align: center;
-        }
-        h2 {
-            color: #333;
-        }
-        p {
-            color: #666;
-            font-size: 14px;
-        }
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <title>Online Video Player</title>
 </head>
 <body>
+    <h3>Paste Video URL Here:</h3>
+    <input type="text" id="videoUrl" placeholder="Enter video URL" style="width: 100%; padding: 8px;">
+    <button onclick="playVideo()">Play Video</button>
 
-<div class="container">
-    <h2>Watch Terabox Video Online</h2>
-    <p>Enter your Terabox share link below, then click "Open Link" to view it on Terabox.</p>
-    <input type="text" id="teraboxLink" placeholder="Paste Terabox share link here">
-    <button onclick="openTeraboxLink()">Open Link</button>
-</div>
+    <div id="videoPlayer" style="margin-top: 20px;">
+        <!-- Video will appear here -->
+    </div>
 
-<script>
-    function openTeraboxLink() {
-        const link = document.getElementById('teraboxLink').value.trim();
-        if (link && link.startsWith("https://www.terabox.com/s/")) {
-            window.open(link, "_blank"); // Opens the Terabox link in a new tab
-        } else {
-            alert("Please enter a valid Terabox share link.");
+    <script>
+        function playVideo() {
+            const url = document.getElementById("videoUrl").value;
+            let embedUrl = "";
+
+            if (url.includes("youtube.com") || url.includes("youtu.be")) {
+                const videoId = url.split("v=")[1] || url.split("/").pop();
+                embedUrl = `https://www.youtube.com/embed/${videoId}`;
+            } else if (url.includes("vimeo.com")) {
+                const videoId = url.split("/").pop();
+                embedUrl = `https://player.vimeo.com/video/${videoId}`;
+            } else {
+                alert("This video URL is not supported. Please use a YouTube or Vimeo link.");
+                return;
+            }
+
+            document.getElementById("videoPlayer").innerHTML = `
+                <iframe width="560" height="315" src="${embedUrl}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            `;
         }
-    }
-</script>
-
+    </script>
 </body>
 </html>
